@@ -1,6 +1,8 @@
 import User from "../Models/User.Model.js";
 import GenerateToken from "../Config/Token.js";
 
+// Google Authentication 
+
 export const googleAuth = async (req, res) => {
   try {
     const { name, email, avatar } = req.body;
@@ -16,13 +18,27 @@ export const googleAuth = async (req, res) => {
     }
 
     // generate token
-    const token = GenerateToken(user); // ✅ removed stray '/'
+    const token = GenerateToken(user); 
+
+    // cookies
+    res.cookie ("token",token,{
+      httpOnly :true,
+      secure : false,
+      sameSite : "strict",
+      maxAge : 7*24*60*100
+    })
 
     // return user data and token in JSON
     return res.status(200).json({
       user,
       token,
+      
     });
+
+
+    
+
+
   } catch (error) {
     return res.status(500).json({
       message: "Google Auth Error " + error.message,
