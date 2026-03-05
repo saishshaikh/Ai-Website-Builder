@@ -1,11 +1,16 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
+import LoginModal from "../Components/LoginModel";
 
 const Home = () => {
-    const highlights =[
-        "AI Genarate Code",
-        "Fully Responsive Layouts",
-        "Production Ready Output"
-    ]
+  const highlights = [
+    "AI Genarate Code",
+    "Fully Responsive Layouts",
+    "Production Ready Output"
+  ];
+
+  const [openlogin, setopenlogin] = useState(false);
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-[#050816] to-black text-white overflow-hidden">
 
@@ -21,6 +26,7 @@ const Home = () => {
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          
           <div className="text-lg font-semibold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
             WebGen.AI
           </div>
@@ -30,9 +36,13 @@ const Home = () => {
               Pricing
             </div>
 
-            <button className="px-4 py-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 hover:bg-indigo-500/20 text-sm transition-all duration-300 shadow-lg shadow-indigo-500/20">
+            <button
+              onClick={() => setopenlogin(true)}
+              className="px-4 py-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 hover:bg-indigo-500/20 text-sm transition-all duration-300 shadow-lg shadow-indigo-500/20"
+            >
               Get Started
             </button>
+
           </div>
         </div>
       </motion.div>
@@ -78,47 +88,48 @@ const Home = () => {
 
       </section>
 
-      
+      {/* Highlights Section */}
+      <section className="relative max-w-7xl mx-auto px-6 pb-32">
 
-        {/* Highlights Section */}
-<section className="relative max-w-7xl mx-auto px-6 pb-32">
+        <div className="grid md:grid-cols-3 gap-8">
 
-  <div className="grid md:grid-cols-3 gap-8">
+          {[
+            "AI-Powered Generation",
+            "Clean & Modern Code",
+            "Deploy in One Click"
+          ].map((h, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -6 }}
+              className="rounded-2xl bg-white/5 border border-white/10 p-8 backdrop-blur-lg hover:border-indigo-400/40 transition-all duration-300 shadow-lg shadow-black/30"
+            >
+              <h2 className="text-xl font-semibold mb-4 text-white">
+                {h}
+              </h2>
 
-    {[
-      "AI-Powered Generation",
-      "Clean & Modern Code",
-      "Deploy in One Click"
-    ].map((h, i) => (
-      <motion.div
-        key={i}
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: i * 0.2 }}
-        viewport={{ once: true }}
-        whileHover={{ y: -6 }}
-        className="rounded-2xl bg-white/5 border border-white/10 p-8 backdrop-blur-lg hover:border-indigo-400/40 transition-all duration-300 shadow-lg shadow-black/30"
-      >
-        <h2 className="text-xl font-semibold mb-4 text-white">
-          {h}
-        </h2>
+              <p className="text-zinc-400 leading-relaxed">
+                WebGen.AI builds real websites — clean code, smooth animations,
+                responsiveness and scalable structure.
+              </p>
+            </motion.div>
+          ))}
 
-        <p className="text-zinc-400 leading-relaxed">
-          WebGen.AI builds real websites — clean code, smooth animations,
-          responsiveness and scalable structure.
-        </p>
-      </motion.div>
-    ))}
+        </div>
 
-  </div>
-</section>
-<footer className="text-center py-6 text-zinc-500 border-t border-white/10">
-  © {new Date().getFullYear()} WebGen.AI. All rights reserved.
-</footer>
+      </section>
 
+      <footer className="text-center py-6 text-zinc-500 border-t border-white/10">
+        © {new Date().getFullYear()} WebGen.AI. All rights reserved.
+      </footer>
 
-
-      
+      <LoginModal
+        open={openlogin}
+        onClose={() => setopenlogin(false)}
+      />
 
     </div>
   );
