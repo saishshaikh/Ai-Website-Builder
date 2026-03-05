@@ -1,7 +1,39 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { signInWithPopup } from "firebase/auth";
+import axios from "axios";
+import { auth, provider } from "../FireBase";
 
 function LoginModal({ open, onClose }) {
+
+  const handleGoogleAuth = async () => {
+    try {
+
+      const result = await signInWithPopup(auth, provider);
+
+      const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+      const { data } = await axios.post(
+        `${serverUrl}/api/auth/google`,
+        {
+          name: result.user.displayName,
+          email: result.user.email,
+          avatar: result.user.photoURL
+        },
+        {
+          withCredentials: true
+        }
+      );
+
+      console.log(data);
+
+      onClose();
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <AnimatePresence>
       {open && (
@@ -24,7 +56,6 @@ function LoginModal({ open, onClose }) {
 
             <div className="relative rounded-3xl bg-[#0b0b0b] border border-white/10 shadow-[0_30px_120px_rgba(0,0,0,0.8)] overflow-hidden">
 
-              {/* Glow Effects */}
               <motion.div
                 animate={{ opacity: [0.2, 0.45, 0.2] }}
                 transition={{ duration: 7, repeat: Infinity }}
@@ -37,7 +68,6 @@ function LoginModal({ open, onClose }) {
                 className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/30 blur-[140px]"
               />
 
-              {/* Close Button */}
               <button
                 className="absolute top-5 right-5 z-20 text-zinc-400 hover:text-white transition text-lg"
                 onClick={onClose}
@@ -47,7 +77,6 @@ function LoginModal({ open, onClose }) {
 
               <div className="relative px-8 pt-14 pb-10 text-center">
 
-                {/* Badge */}
                 <motion.h1
                   initial={{ opacity: 0, y: -15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -57,7 +86,6 @@ function LoginModal({ open, onClose }) {
                   AI-powered website builder
                 </motion.h1>
 
-                {/* Title */}
                 <motion.h2
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -71,13 +99,13 @@ function LoginModal({ open, onClose }) {
                   </span>
                 </motion.h2>
 
-                {/* Google Button */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
+                  onClick={handleGoogleAuth}
                   className="group relative w-full h-12 rounded-xl bg-white text-black font-semibold shadow-xl overflow-hidden"
                 >
                   <div className="relative flex items-center justify-center gap-3">
@@ -90,7 +118,6 @@ function LoginModal({ open, onClose }) {
                   </div>
                 </motion.button>
 
-                {/* Divider */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -106,7 +133,6 @@ function LoginModal({ open, onClose }) {
                   <div className="h-px flex-1 bg-white/10" />
                 </motion.div>
 
-                {/* Terms */}
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
