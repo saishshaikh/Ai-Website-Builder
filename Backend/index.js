@@ -28,3 +28,10 @@ const port = process.env.PORT || 8000;
 
 app.get("/Home", (req, res) => {
   res.send("Home page");
+});
+
+// start server
+app.listen(port, () => {
+  DBconnect()
+  console.log(`Server running on port ${port}`);
+});

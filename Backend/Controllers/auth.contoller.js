@@ -1,4 +1,5 @@
-import User from "../Models/User.Model.js";
+import User from "../models/User.js";
+
 import GenerateToken from "../Config/Token.js";
 
 // Google Authentication 
